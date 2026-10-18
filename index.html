@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Анкета для жюри: исследовательская работа о молодежном сленге">
+<title>Анкета жюри: лексикон школьника</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=Caveat:wght@500;700&display=swap">
+<style>
+:root{
+--paper:#fbfcfd; --grid:#dfe8f1; --ink:#1d2b4a; --muted:#5b6780;
+--pen:#2340a8; --pen-soft:#e7ecfb; --red:#c8312b; --red-soft:#fbe9e8;
+--line:#cbd5e3; --card:#ffffff; --ok:#2c7a4b; --ok-soft:#e5f4ea;
+--f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+--f-body:"Golos Text","Segoe UI",system-ui,sans-serif;
+--f-hand:"Caveat","Comic Sans MS",cursive;
+}
+@media (prefers-color-scheme: dark){:root{
+--paper:#121a2b; --grid:#1c2740; --ink:#e6ebf5; --muted:#9aa7c2;
+--pen:#8ea6ff; --pen-soft:#1f2b4f; --red:#ff7b72; --red-soft:#3a1f22;
+--line:#2c3a58; --card:#172138; --ok:#6fd39a; --ok-soft:#183427; color-scheme:dark}}
+*{box-sizing:border-box}
+body{
+margin:0;
+background-color:var(--paper);
+background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+background-size:22px 22px;
+color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55;
+padding:32px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px));
+}
+.sheet{max-width:720px;margin:0 auto;display:grid;gap:28px}
+header{display:grid;gap:12px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.4vw,40px);line-height:1.12;margin:0;text-wrap:balance}
+h1 .hand{font-family:var(--f-hand);font-weight:700;color:var(--red);font-size:1.15em;display:inline-block;transform:rotate(-3deg);margin-left:.15em}
+.lead{margin:0;max-width:62ch;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:600}
+section{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:22px clamp(16px,4vw,28px);display:grid;gap:18px}
+h2{font-family:var(--f-display);font-weight:500;font-size:20px;margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+h2 small{font-family:var(--f-body);font-size:14px;color:var(--muted);font-weight:400}
+.q{display:grid;gap:10px;padding-top:16px;border-top:1px dashed var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q-title{font-weight:600;margin:0}
+.word{font-family:var(--f-display);font-weight:500;color:var(--pen)}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;color:inherit;text-align:left;cursor:pointer;background:transparent;border:1.5px solid var(--line);border-radius:6px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s,background .15s}
+.opt::before{content:"";flex:none;width:16px;height:16px;margin-top:3px;border:1.5px solid var(--muted);border-radius:50%}
+.opt:hover{border-color:var(--pen)}
+.opt:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+.opt[aria-pressed="true"]{border-color:var(--pen);background:var(--pen-soft)}
+.opt[aria-pressed="true"]::before{background:var(--pen);border-color:var(--pen);box-shadow:inset 0 0 0 3px var(--card)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right::before{background:var(--ok);border-color:var(--ok);box-shadow:inset 0 0 0 3px var(--card)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft);text-decoration:line-through;text-decoration-color:var(--red)}
+.opt.wrong::before{border-color:var(--red)}
+.opt:disabled{cursor:default}
+.note{font-family:var(--f-hand);font-size:22px;line-height:1.2;margin:0}
+.note.ok{color:var(--ok)} .note.bad{color:var(--red)}
+.score{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 16px;border:1.5px dashed var(--red);border-radius:6px}
+.score[hidden]{display:none}
+.score .mark{font-family:var(--f-hand);font-weight:700;font-size:44px;line-height:1;color:var(--red);transform:rotate(-4deg)}
+.score p{margin:0;flex:1;min-width:200px}
+textarea{width:100%;min-height:96px;font:inherit;color:inherit;background:transparent;border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;resize:vertical}
+textarea:focus-visible{outline:2px solid var(--pen);outline-offset:2px;border-color:var(--pen)}
+.btn{display:inline-flex;justify-content:center;align-items:center;font-family:var(--f-display);font-weight:500;font-size:16px;text-decoration:none;background:var(--pen);color:var(--card);border-radius:6px;padding:14px 22px}
+.btn[aria-disabled="true"]{background:var(--line);color:var(--muted);pointer-events:none}
+.small{font-size:14px;color:var(--muted);margin:0}
+footer{font-size:13px;color:var(--muted);text-align:center}
+.about p{margin:0;max-width:66ch}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
+.fact{display:grid;gap:4px;padding:12px 14px;border:1.5px dashed var(--line);border-radius:6px;font-size:14px;color:var(--muted)}
+.fnum{font-family:var(--f-hand);font-weight:700;font-size:34px;line-height:1;color:var(--red)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="sheet">
+<header>
+<div class="eyebrow">Научный проект · анкета для жюри</div>
+<h1>Поймете ли вы <span class="hand">школьника?</span></h1>
+<p class="lead">Исследовательская работа «Молодежный сленг как компонент речевой культуры, или Лексикон современного школьника». Пройдите короткий тест из шести слов и ответьте на четыре вопроса. Ваши ответы войдут в общую статистику исследования.</p>
+<div class="meta"><span>Автор: <b>Зауренбек Камила</b></span><span>Руководитель: <b>Мухамеджанова Н.О.</b></span><span>Время: <b>2 минуты</b></span></div>
+</header>
+<section>
+<h2>Тест <small>выберите значение слова</small></h2>
+<div id="quiz"></div>
+<div class="score" id="score" hidden><div class="mark" id="mark"></div><p id="score-text"></p></div>
+</section>
+<section>
+<h2>Ваше мнение</h2>
+<div id="att"></div>
+<div class="q"><label class="q-title" for="comment">Комментарий для автора работы <span class="small">(необязательно)</span></label>
+<textarea id="comment" placeholder="Например, что показалось интересным в работе"></textarea></div>
+</section>
+<section>
+<h2>Отправка</h2>
+<p class="small" id="progress"></p>
+<a class="btn" id="send" href="#" target="_blank" rel="noopener" aria-disabled="true">Перейти к отправке ответа</a>
+<p class="small">Откроется Google Форма с уже заполненными ответами. Проверьте их и нажмите «Отправить» внизу формы. Проценты по всем ответам жюри считаются в этой форме автоматически.</p>
+</section>
+<section class="about">
+<h2>О чем эта работа <small>прочитайте после теста</small></h2>
+<p class="q-title">Вопрос исследования: вредит ли сленг речевой культуре подростка?</p>
+<p><b>Гипотеза.</b> Сленг не вредит речи подростка, если тот умеет переключаться между сленгом и литературным языком в зависимости от ситуации. При этом взрослые оценивают сленг строже, чем сами подростки.</p>
+<div class="facts">
+<div class="fact"><span class="fnum">74 %</span><span>старшеклассников используют сленг, чтобы точнее или ярче выразить мысль (опрос 90 учеников)</span></div>
+<div class="fact"><span class="fnum">63 %</span><span>учителей считают, что сленг ухудшает грамотность (опрос 27 учителей)</span></div>
+<div class="fact"><span class="fnum">33 %</span><span>учителей относятся к сленгу отрицательно, остальные спокойно или положительно</span></div>
+<div class="fact"><span class="fnum">0 из 8</span><span>учителей, понимающих все шесть сленговых слов, относятся к сленгу отрицательно</span></div>
+</div>
+<p><b>Философский взгляд.</b> По Гумбольдту, язык – это не готовое изделие, а деятельность, и сленг – язык в момент рождения. Выготский показал, что мысль совершается в слове: новое слово помогает подростку назвать то, что раньше было трудно выразить. Лабов и Эриксон объясняют, почему подростку нужен свой язык: это знак принадлежности к группе и часть поиска себя.</p>
+<p><b>Вывод.</b> Сленг сам по себе не хороший и не плохой. Опасно не употребление сленга, а неумение переключаться между ним и литературной речью. Данные показывают, что значительная часть тревоги взрослых связана с непониманием: чем лучше учитель понимает сленг, тем спокойнее к нему относится. Поэтому работа предлагает не запрещать сленг, а обсуждать его на уроках и учить выбирать слова под ситуацию.</p>
+</section>
+<footer>Анкета анонимная. Имя и почта не собираются.</footer>
+</main>
+<script>
+const FORM={url:"https://docs.google.com/forms/d/e/1FAIpQLSdSH5Ov0ldAIRmvF78G-2DcjQrk5SSvsOySnlk4sZ2mHgs6xw/viewform",entries:{quiz:[794662503,345445245,1266402635,2080753199,1102642867,1476423090],att:[1048209140,1406931160,571721551,1252741459],comment:324438825}};
+const QUIZ=[
+{w:"Кринж",o:["Неловкость, стыд за другого человека","Хорошее настроение","Ссора с другом"],a:0,src:"англ. cringe"},
+{w:"Душнить",o:["Сильно уставать","Занудствовать, придираться к мелочам","Опаздывать"],a:1,src:"от «душный»"},
+{w:"Пруфы",o:["Ошибки в тексте","Шутки","Доказательства"],a:2,src:"англ. proof"},
+{w:"Рофлить",o:["Шутить, подтрунивать","Громко спорить","Списывать"],a:0,src:"англ. ROFL"},
+{w:"Чилить",o:["Мерзнуть","Отдыхать, расслабляться","Торопиться"],a:1,src:"англ. chill"},
+{w:"Токсик",o:["Отличник","Новичок в классе","Язвительный, недоброжелательный человек"],a:2,src:"англ. toxic"}];
+const ATT=[
+{t:"Как часто вы слышите сленг в речи подростков?",o:["Постоянно","Часто","Иногда","Редко"]},
+{t:"Как вы относитесь к сленгу в речи школьников?",o:["Положительно","Нейтрально","Отрицательно"]},
+{t:"Используете ли вы сами сленговые слова?",o:["Часто","Иногда","Никогда"]},
+{t:"Считаете ли вы, что англицизмы засоряют русский язык?",o:["Да","Скорее да","Скорее нет","Нет"]}];
+const ans={quiz:Array(QUIZ.length).fill(null),att:Array(ATT.length).fill(null)};
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;}
+QUIZ.forEach(function(q,qi){const box=el("div","q");const t=el("p","q-title");t.append((qi+1)+". Что означает слово ");t.append(el("span","word","«"+q.w+"»"));t.append("?");
+const opts=el("div","opts");const note=el("p","note");note.hidden=true;
+q.o.forEach(function(txt,oi){const b=el("button","opt",txt);b.type="button";b.addEventListener("click",function(){if(ans.quiz[qi]!==null)return;ans.quiz[qi]=oi;
+Array.from(opts.children).forEach(function(c,ci){c.disabled=true;if(ci===q.a)c.classList.add("right");else if(ci===oi)c.classList.add("wrong");});
+note.hidden=false;if(oi===q.a){note.className="note ok";note.textContent="Верно! ("+q.src+")";}else{note.className="note bad";note.textContent="Не совсем. «"+q.w+"» – "+q.o[q.a].toLowerCase()+" ("+q.src+")";}update();});opts.append(b);});
+box.append(t,opts,note);document.getElementById("quiz").append(box);});
+ATT.forEach(function(q,qi){const box=el("div","q");const t=el("p","q-title",(qi+1)+". "+q.t);const opts=el("div","opts");
+q.o.forEach(function(txt,oi){const b=el("button","opt",txt);b.type="button";b.setAttribute("aria-pressed","false");b.addEventListener("click",function(){ans.att[qi]=oi;Array.from(opts.children).forEach(function(c,ci){c.setAttribute("aria-pressed",String(ci===oi));});update();});opts.append(b);});
+box.append(t,opts);document.getElementById("att").append(box);});
+function plural(n){const a=n%10,b=n%100;if(a===1&&b!==11)return "слово";if(a>=2&&a<=4&&(b<10||b>=20))return "слова";return "слов";}
+function buildUrl(){const p=new URLSearchParams();p.set("usp","pp_url");QUIZ.forEach(function(q,i){p.set("entry."+FORM.entries.quiz[i],q.o[ans.quiz[i]]);});ATT.forEach(function(q,i){p.set("entry."+FORM.entries.att[i],q.o[ans.att[i]]);});const c=document.getElementById("comment").value.trim();if(c)p.set("entry."+FORM.entries.comment,c);return FORM.url+"?"+p.toString();}
+function update(){const dq=ans.quiz.filter(function(v){return v!==null;}).length,da=ans.att.filter(function(v){return v!==null;}).length,total=QUIZ.length+ATT.length,done=dq+da;
+if(dq===QUIZ.length){const right=ans.quiz.filter(function(v,i){return v===QUIZ[i].a;}).length;document.getElementById("score").hidden=false;document.getElementById("mark").textContent=right+"/"+QUIZ.length;
+document.getElementById("score-text").textContent=right===QUIZ.length?"Отлично! Вы понимаете язык современных школьников.":"Вы угадали "+right+" "+plural(right)+" из "+QUIZ.length+". Именно поэтому взрослым и подросткам иногда трудно понять друг друга.";}
+const btn=document.getElementById("send");document.getElementById("progress").textContent=done<total?"Отвечено "+done+" из "+total+" вопросов.":"Все вопросы отвечены.";
+if(done===total){btn.href=buildUrl();btn.setAttribute("aria-disabled","false");}else{btn.href="#";btn.setAttribute("aria-disabled","true");}}
+update();document.getElementById("comment").addEventListener("input",update);
+</script>
+</body>
+</html>
