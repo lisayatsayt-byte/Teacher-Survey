@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Сленг: статистика исследования</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=Caveat:wght@700&display=swap">
+<style>
+:root{
+--paper:#fbfcfd;--grid:#e3eaf2;--ink:#1d2b4a;--muted:#5b6780;--pen:#2340a8;--pen-soft:#e7ecfb;
+--red:#c8312b;--ok:#2c7a4b;--line:#cbd5e3;--card:#ffffff;--track:#edf1f6;--bar:#9fb0cf;
+--f-display:"Unbounded","Arial Black",system-ui,sans-serif;--f-body:"Golos Text","Segoe UI",system-ui,sans-serif;--f-hand:"Caveat","Comic Sans MS",cursive;
+}
+@media (prefers-color-scheme: dark){:root{
+--paper:#121a2b;--grid:#1a2439;--ink:#e6ebf5;--muted:#9aa7c2;--pen:#8ea6ff;--pen-soft:#1f2b4f;
+--red:#ff7b72;--ok:#6fd39a;--line:#2c3a58;--card:#172138;--track:#1f2a42;--bar:#4a5b82;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;padding:28px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1100px;margin:0 auto;display:grid;gap:22px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,4.6vw,36px);line-height:1.1;margin:0}
+h1 .hand{font-family:var(--f-hand);color:var(--red);font-size:1.2em;display:inline-block;transform:rotate(-3deg);margin-left:.1em}
+.live{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:pulse 2s infinite}
+.dot.err{background:var(--red);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(44,122,75,.5)}70%{box-shadow:0 0 0 8px rgba(44,122,75,0)}100%{box-shadow:0 0 0 0 rgba(44,122,75,0)}}
+@media (prefers-reduced-motion: reduce){.dot{animation:none}}
+.btn{font:inherit;font-size:14px;color:var(--pen);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.lead{margin:0;color:var(--muted);max-width:75ch}
+.lead b{color:var(--ink)}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line)}
+.tab{font:inherit;font-size:15px;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 14px;cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--pen);font-weight:600}
+.page{display:grid;gap:18px}
+.page[hidden]{display:none}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px}
+.tile,.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:grid;gap:6px;align-content:start;min-width:0}
+.tile .lbl{font-size:13px;color:var(--muted)}
+.big{font-family:var(--f-display);font-weight:500;font-size:clamp(24px,3.4vw,32px);line-height:1.1;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.card h3{margin:0 0 6px;font-size:16px;font-weight:600}
+.note{margin:0;font-size:13px;color:var(--muted)}
+.bars{display:grid;gap:9px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 10px;font-size:14px}
+.bar .val{color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.bar .track{grid-column:1/-1;height:10px;border-radius:5px;background:var(--track);overflow:hidden}
+.bar .fill{height:100%;border-radius:5px;background:var(--bar);transition:width .5s ease}
+.bar.top .fill{background:var(--pen)}
+.bar.top .name{font-weight:600}
+.warn{margin:0;font-size:14px;color:var(--red)}
+.quote{margin:0;padding:8px 12px;border-left:3px solid var(--line);font-size:15px}
+.quote small{display:block;color:var(--muted);font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:14px}
+.sides{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.side h3{margin:0;font-size:17px}
+.side.pro h3{color:var(--ok)}.side.con h3{color:var(--red)}
+.side ul{margin:0;padding-left:1.1em;display:grid;gap:8px}
+.num{font-weight:700;font-variant-numeric:tabular-nums}
+.verdict{font-size:18px;line-height:1.55;margin:0;max-width:75ch}
+.prose{display:grid;gap:10px;max-width:75ch;line-height:1.6}
+.prose p{margin:0}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tools select,.tools input{font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.tablewrap{max-height:30rem;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{position:sticky;top:0;background:var(--card);text-align:left;font-weight:600;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top;min-width:7rem}
+td.long{min-width:16rem}
+footer{font-size:13px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Сленг: <span class="hand">статистика</span></h1>
+<div class="live"><span class="dot" id="dot"></span><span id="status">Загружаю ответы…</span><button class="btn" id="refresh" type="button">Обновить</button></div>
+</header>
+<p class="lead" id="lead">Ответы подтягиваются из Google Форм автоматически каждые 30 секунд.</p>
+
+<nav class="tabs" role="tablist">
+<button class="tab" role="tab" data-tab="overview" aria-selected="true">Обзор</button>
+<button class="tab" role="tab" data-tab="students" aria-selected="false">Ученики</button>
+<button class="tab" role="tab" data-tab="teachers" aria-selected="false">Учителя</button>
+<button class="tab" role="tab" data-tab="jury" aria-selected="false">Жюри</button>
+<button class="tab" role="tab" data-tab="impact" aria-selected="false">Хорошо или плохо</button>
+<button class="tab" role="tab" data-tab="raw" aria-selected="false">Все ответы</button>
+</nav>
+
+<section class="page" data-page="overview">
+<div class="tiles">
+<div class="tile"><span class="lbl">Ответов учеников</span><span class="big" data-k="students_n">—</span></div>
+<div class="tile"><span class="lbl">Ответов учителей</span><span class="big" data-k="teachers_n">—</span></div>
+<div class="tile"><span class="lbl">Ответов жюри</span><span class="big" data-k="jury_n">—</span></div>
+<div class="tile"><span class="lbl">Учителей считают, что сленг ухудшает грамотность</span><span class="big" data-k="t_worse" data-pct="1">—</span></div>
+<div class="tile"><span class="lbl">Учителей относятся к сленгу отрицательно</span><span class="big" data-k="t_negative" data-pct="1">—</span></div>
+<div class="tile"><span class="lbl">Учеников используют сленг часто или иногда</span><span class="big" data-k="s_use" data-pct="1">—</span></div>
+</div>
+<div class="grid">
+<div class="card"><h3>Отношение учителей к сленгу</h3><div class="bars" data-chart="t:attitude"></div></div>
+<div class="card"><h3>Влияет ли сленг на грамотность</h3><p class="note">Мнение учителей</p><div class="bars" data-chart="t:literacy"></div></div>
+<div class="card"><h3>Зачем ученики используют сленг</h3><div class="bars" data-chart="s:why"></div></div>
+<div class="card"><h3>Понимает ли жюри школьников</h3><p class="note">Доля верных ответов по каждому слову</p><div class="bars" data-chart="quiz"></div></div>
+</div>
+</section>
+
+<section class="page" data-page="students" hidden>
+<p class="warn" id="s-small" hidden></p>
+<div class="grid">
+<div class="card"><h3>Класс</h3><div class="bars" data-chart="s:grade"></div></div>
+<div class="card"><h3>Знают, что такое сленг</h3><div class="bars" data-chart="s:knows"></div></div>
+<div class="card"><h3>Как часто используют сленг</h3><div class="bars" data-chart="s:freq"></div></div>
+<div class="card"><h3>Главная причина</h3><div class="bars" data-chart="s:why"></div></div>
+<div class="card"><h3>Где употребляют чаще всего</h3><div class="bars" data-chart="s:where"></div></div>
+<div class="card"><h3>Английские слова на уроке кажутся знакомыми</h3><div class="bars" data-chart="s:eng"></div></div>
+</div>
+<div class="card"><h3>Слова, которые назвали ученики</h3><div class="chips" id="words"></div></div>
+</section>
+
+<section class="page" data-page="teachers" hidden>
+<div class="grid">
+<div class="card"><h3>Предмет</h3><div class="bars" data-chart="t:subject"></div></div>
+<div class="card"><h3>Как часто слышат сленг</h3><div class="bars" data-chart="t:hear"></div></div>
+<div class="card"><h3>Отношение к сленгу</h3><div class="bars" data-chart="t:attitude"></div></div>
+<div class="card"><h3>Сами используют сленг</h3><div class="bars" data-chart="t:self"></div></div>
+<div class="card"><h3>Понимают слова «кринж», «душнить», «пруфы», «рофлить», «чилить», «токсик»</h3><div class="bars" data-chart="t:understand"></div></div>
+<div class="card"><h3>Влияет ли сленг на грамотность</h3><div class="bars" data-chart="t:literacy"></div></div>
+</div>
+<div class="card"><h3>Комментарии учителей</h3><div class="prose" id="t-comments"></div></div>
+</section>
+
+<section class="page" data-page="jury" hidden>
+<p class="warn" id="j-empty" hidden>Члены жюри еще не отвечали. Как только кто-то пройдет анкету, графики заполнятся сами.</p>
+<div class="tiles">
+<div class="tile"><span class="lbl">Средний результат теста, верных слов из шести</span><span class="big" data-k="j_avg" data-avg="1">—</span></div>
+</div>
+<div class="grid">
+<div class="card"><h3>Верные ответы по словам</h3><div class="bars" data-chart="quiz"></div></div>
+<div class="card"><h3>Как часто слышат сленг</h3><div class="bars" data-chart="j:hear"></div></div>
+<div class="card"><h3>Отношение к сленгу</h3><div class="bars" data-chart="j:attitude"></div></div>
+<div class="card"><h3>Сами используют сленг</h3><div class="bars" data-chart="j:self"></div></div>
+<div class="card"><h3>Засоряют ли англицизмы русский язык</h3><div class="bars" data-chart="j:angl"></div></div>
+</div>
+<div class="card"><h3>Комментарии жюри</h3><div class="prose" id="j-comments"></div></div>
+</section>
+
+<section class="page" data-page="impact" hidden>
+<div class="card"><h3>Что показывают ответы</h3><p class="verdict" id="verdict">—</p></div>
+<div class="sides">
+<div class="card side pro"><h3>Польза</h3><ul>
+<li>Сленг помогает выразить мысль, когда обычных слов не хватает или хочется сказать ярче: так ответили <span class="num" data-k="s_express" data-pct="1">—</span> учеников.</li>
+<li>Учителя, которые относятся к сленгу положительно или нейтрально: <span class="num" data-k="t_tolerant" data-pct="1">—</span>.</li>
+<li>Сленг делает подростка «своим» в группе сверстников и помогает ему найти себя.</li>
+<li>Через сленг подростки раньше и легче знакомятся с английскими словами.</li>
+</ul></div>
+<div class="card side con"><h3>Риск</h3><ul>
+<li>Учителя, которые считают, что сленг ухудшает грамотность: <span class="num" data-k="t_worse" data-pct="1">—</span>.</li>
+<li>Учителя, которые относятся к сленгу отрицательно: <span class="num" data-k="t_negative" data-pct="1">—</span>.</li>
+<li>Если сленг вытесняет литературные слова, словарный запас беднеет.</li>
+<li>Непонятные слова мешают разговору подростков и взрослых.</li>
+</ul></div>
+</div>
+<div class="card"><h3>Философия: почему сленг нельзя просто запретить</h3><div class="prose">
+<p><b>Язык живет, пока меняется.</b> Вильгельм фон Гумбольдт писал, что язык – это не готовое изделие, а деятельность. Сленг – это язык в момент рождения: часть слов исчезнет, а часть станет обычной лексикой, как когда-то «кайф» или «тусовка».</p>
+<p><b>Слово помогает мыслить.</b> Л.С. Выготский показал, что мысль совершается в слове. Новое слово дает подростку возможность назвать то, что раньше было трудно выразить: «кринж» дал имя чувству неловкости за другого.</p>
+<p><b>Язык – знак принадлежности.</b> Уильям Лабов показал, что люди меняют речь в зависимости от группы. По Эрику Эриксону, главная задача подростка – найти себя, и сленг становится частью этого поиска.</p>
+<p><b>Главное – умение переключаться.</b> Опасен не сам сленг, а неумение выбрать язык под ситуацию. Если ученик говорит с друзьями на сленге, а в сочинении – литературным языком, сленг расширяет его речь, а не заменяет ее.</p>
+<p><b>Вывод.</b> Сленг сам по себе не хороший и не плохой. Мерой его влияния служит не количество сленга в речи, а умение говорить по-разному в разных ситуациях.</p>
+</div></div>
+</section>
+
+<section class="page" data-page="raw" hidden>
+<div class="tools">
+<label for="raw-group">Группа</label>
+<select id="raw-group"><option value="students">Ученики</option><option value="teachers" selected>Учителя</option><option value="jury">Жюри</option></select>
+<input id="raw-search" type="search" placeholder="Поиск по ответам" aria-label="Поиск по ответам">
+</div>
+<div class="tablewrap" id="raw-wrap"></div>
+</section>
+
+<footer>Данные берутся из Google Таблиц, привязанных к анкетам. Страница не индексируется поисковиками.</footer>
+</div>
+
+<script>
+var SHEETS = {
+  students: { id: "10ucNVuZ5INEFdLg3OCFQItHgFKWs3Qw2T7j3HMDIsLw", keys: ["time","grade","knows","freq","why","where","eng","words"] },
+  teachers: { id: "1iqJCDxPWnhXi2qKPAGZG8KYwCjqXaYH4UqCu1rqTrvw", keys: ["time","subject","hear","attitude","self","understand","literacy","comment"] },
+  jury: { id: "1QwmVx3HoLbI3krQ5d_MKsLWQin7reHrMr4Dh0zER8kQ", keys: ["time","q1","q2","q3","q4","q5","q6","hear","attitude","self","angl","comment"] }
+};
+var OPTS = {
+  s: {
+    grade: ["7","8","9","10","11"],
+    knows: ["Да","Нет"],
+    freq: ["Часто","Иногда","Редко","Не использую"],
+    why: ["Хочу быть как все","Это круто","Не всегда хватает слов, чтобы выразить мысль","Так я могу ярче выразить свои мысли","Это часть моего хобби","Не употребляю сленг"],
+    where: ["Дома","В школе","В общественных местах","В социальных сетях"],
+    eng: ["Да, часто","Иногда","Нет"]
+  },
+  t: {
+    subject: ["Английский язык","Русский язык и литература","Казахский язык и литература","Другой предмет"],
+    hear: ["Постоянно","Часто","Иногда","Редко"],
+    attitude: ["Положительно","Нейтрально","Отрицательно"],
+    self: ["Часто","Иногда","Никогда"],
+    understand: ["Все 6","4–5 слов","2–3 слова","Одно или ни одного"],
+    literacy: ["Да, ухудшает","Скорее нет","Не влияет","Затрудняюсь ответить"]
+  },
+  j: {
+    hear: ["Постоянно","Часто","Иногда","Редко"],
+    attitude: ["Положительно","Нейтрально","Отрицательно"],
+    self: ["Часто","Иногда","Никогда"],
+    angl: ["Да","Скорее да","Скорее нет","Нет"]
+  }
+};
+var QUIZ = [
+  ["q1","Кринж","Неловкость, стыд за другого человека"],
+  ["q2","Душнить","Занудствовать, придираться к мелочам"],
+  ["q3","Пруфы","Доказательства"],
+  ["q4","Рофлить","Шутить, подтрунивать"],
+  ["q5","Чилить","Отдыхать, расслабляться"],
+  ["q6","Токсик","Язвительный, недоброжелательный человек"]
+];
+var RAWCOLS = {
+  students: [["time","Время"],["grade","Класс"],["knows","Знает сленг"],["freq","Как часто"],["why","Причина"],["where","Где"],["eng","Слова на английском знакомы"],["words","Свои слова"]],
+  teachers: [["time","Время"],["subject","Предмет"],["hear","Слышит сленг"],["attitude","Отношение"],["self","Сам использует"],["understand","Понимает слов"],["literacy","Влияние на грамотность"],["comment","Комментарий"]],
+  jury: [["time","Время"],["q1","Кринж"],["q2","Душнить"],["q3","Пруфы"],["q4","Рофлить"],["q5","Чилить"],["q6","Токсик"],["hear","Слышит сленг"],["attitude","Отношение"],["self","Сам использует"],["angl","Англицизмы засоряют язык"],["comment","Комментарий"]]
+};
+var DATA = { students: null, teachers: null, jury: null };
+var cbCount = 0;
+
+function loadSheet(name) {
+  return new Promise(function (resolve) {
+    var cb = "__gv" + (++cbCount);
+    var s = document.createElement("script");
+    var done = false;
+    function finish(rows) { if (done) return; done = true; try { delete window[cb]; } catch (e) {} s.remove(); resolve(rows); }
+    window[cb] = function (resp) {
+      if (!resp || resp.status !== "ok") { finish(null); return; }
+      var keys = SHEETS[name].keys;
+      var rows = resp.table.rows.map(function (r) {
+        var o = {};
+        keys.forEach(function (k, i) {
+          var c = r.c[i];
+          o[k] = c ? String(c.f != null ? c.f : (c.v != null ? c.v : "")).trim() : "";
+        });
+        return o;
+      }).filter(function (o) { return o.time !== ""; });
+      finish(rows);
+    };
+    s.onerror = function () { finish(null); };
+    s.src = "https://docs.google.com/spreadsheets/d/" + SHEETS[name].id + "/gviz/tq?headers=1&tqx=out:json;responseHandler:" + cb + "&_=" + Date.now();
+    document.head.appendChild(s);
+    setTimeout(function () { finish(null); }, 15000);
+  });
+}
+
+function share(rows, col, vals) {
+  var total = rows.filter(function (r) { return r[col] !== ""; }).length;
+  if (!total) return null;
+  return rows.filter(function (r) { return vals.indexOf(r[col]) >= 0; }).length / total;
+}
+function dist(rows, col, opts) {
+  var total = rows.filter(function (r) { return r[col] !== ""; }).length;
+  return opts.map(function (o) {
+    var n = rows.filter(function (r) { return r[col] === o; }).length;
+    return { option: o, n: n, share: total ? n / total : null };
+  });
+}
+function pct(v) { return v == null ? "—" : Math.round(v * 100) + " %"; }
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+function drawBars(box, rows) {
+  var max = Math.max.apply(null, rows.map(function (r) { return r.n; }));
+  box.replaceChildren.apply(box, rows.map(function (r) {
+    var row = el("div", "bar" + (max > 0 && r.n === max ? " top" : ""));
+    var track = el("div", "track");
+    var fill = el("div", "fill");
+    fill.style.width = (r.share == null ? 0 : r.share * 100) + "%";
+    track.append(fill);
+    row.append(el("span", "name", r.option), el("span", "val", r.share == null ? "нет ответов" : pct(r.share) + " · " + r.n), track);
+    return row;
+  }));
+}
+
+function overview() {
+  var s = DATA.students || [], t = DATA.teachers || [], j = DATA.jury || [];
+  var jAvg = null;
+  if (j.length) {
+    jAvg = j.reduce(function (sum, r) { return sum + QUIZ.filter(function (q) { return r[q[0]] === q[2]; }).length; }, 0) / j.length;
+  }
+  return {
+    students_n: s.length, teachers_n: t.length, jury_n: j.length,
+    s_use: share(s, "freq", ["Часто","Иногда"]),
+    s_express: share(s, "why", ["Не всегда хватает слов, чтобы выразить мысль","Так я могу ярче выразить свои мысли"]),
+    t_worse: share(t, "literacy", ["Да, ухудшает"]),
+    t_negative: share(t, "attitude", ["Отрицательно"]),
+    t_tolerant: share(t, "attitude", ["Положительно","Нейтрально"]),
+    j_avg: jAvg
+  };
+}
+
+function comments(box, rows) {
+  var list = rows.filter(function (r) { return r.comment; });
+  if (!list.length) { box.replaceChildren(el("p", "note", "Комментариев пока нет.")); return; }
+  box.replaceChildren.apply(box, list.slice().reverse().map(function (r) {
+    var q = el("blockquote", "quote", r.comment);
+    q.append(el("small", null, r.time));
+    return q;
+  }));
+}
+
+function drawRaw() {
+  var g = document.getElementById("raw-group").value;
+  var q = document.getElementById("raw-search").value.trim().toLowerCase();
+  var cols = RAWCOLS[g];
+  var rows = (DATA[g] || []).filter(function (r) { return !q || cols.some(function (c) { return String(r[c[0]]).toLowerCase().indexOf(q) >= 0; }); });
+  var table = el("table");
+  var head = el("tr");
+  cols.forEach(function (c) { head.append(el("th", null, c[1])); });
+  var thead = el("thead"); thead.append(head);
+  var tbody = el("tbody");
+  rows.slice().reverse().forEach(function (r) {
+    var tr = el("tr");
+    cols.forEach(function (c) { tr.append(el("td", c[0] === "comment" || c[0] === "words" ? "long" : null, r[c[0]])); });
+    tbody.append(tr);
+  });
+  table.append(thead, tbody);
+  document.getElementById("raw-wrap").replaceChildren(table);
+}
+
+function render() {
+  var o = overview();
+  document.querySelectorAll("[data-k]").forEach(function (e) {
+    var v = o[e.dataset.k];
+    e.textContent = e.dataset.pct ? pct(v) : e.dataset.avg ? (v == null ? "—" : v.toFixed(1).replace(".", ",")) : v;
+  });
+  document.getElementById("lead").replaceChildren(
+    "Ответили ", el("b", null, String(o.students_n)), " учеников, ", el("b", null, String(o.teachers_n)), " учителей и ", el("b", null, String(o.jury_n)),
+    " членов жюри. Сленг ухудшает грамотность, по мнению ", el("b", null, pct(o.t_worse)), " учителей, но отрицательно к нему относятся только ", el("b", null, pct(o.t_negative)), "."
+  );
+  var small = document.getElementById("s-small");
+  small.hidden = o.students_n >= 30;
+  small.textContent = "Пока ответили всего " + o.students_n + " учеников. Чтобы проценты были надежными, нужно хотя бы 30 ответов.";
+  document.getElementById("j-empty").hidden = o.jury_n > 0;
+
+  var src = { s: DATA.students || [], t: DATA.teachers || [], j: DATA.jury || [] };
+  document.querySelectorAll("[data-chart]").forEach(function (box) {
+    var spec = box.dataset.chart;
+    if (spec === "quiz") {
+      var j = src.j;
+      drawBars(box, QUIZ.map(function (q) {
+        var total = j.filter(function (r) { return r[q[0]] !== ""; }).length;
+        var n = j.filter(function (r) { return r[q[0]] === q[2]; }).length;
+        return { option: q[1], n: n, share: total ? n / total : null };
+      }));
+      return;
+    }
+    var p = spec.split(":");
+    drawBars(box, dist(src[p[0]], p[1], OPTS[p[0]][p[1]]));
+  });
+
+  var counts = {};
+  src.s.forEach(function (r) {
+    String(r.words || "").toLowerCase().split(/[,;.\n]+/).forEach(function (w) { w = w.trim(); if (w) counts[w] = (counts[w] || 0) + 1; });
+  });
+  var words = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
+  var wbox = document.getElementById("words");
+  if (!words.length) wbox.replaceChildren(el("p", "note", "Ученики пока не назвали ни одного слова."));
+  else wbox.replaceChildren.apply(wbox, words.map(function (w) { return el("span", "chip", w + (counts[w] > 1 ? " × " + counts[w] : "")); }));
+
+  comments(document.getElementById("t-comments"), src.t);
+  comments(document.getElementById("j-comments"), src.j);
+
+  var v = document.getElementById("verdict");
+  var parts = [];
+  if (o.t_worse != null) {
+    parts.push(el("span", "num", pct(o.t_worse)), " учителей видят угрозу для грамотности, но только ", el("span", "num", pct(o.t_negative)), " относятся к сленгу отрицательно, а ", el("span", "num", pct(o.t_tolerant)), " принимают его спокойно или положительно. ");
+  }
+  if (o.s_express != null) {
+    parts.push("Ученики объясняют сленг потребностью точнее выразить мысль: так ответили ", el("span", "num", pct(o.s_express)), ". ");
+  }
+  parts.push("Значит, взрослые опасаются не самих слов, а того, что они вытеснят литературную речь. Сленг полезен, пока ученик умеет переключаться между ним и литературным языком.");
+  v.replaceChildren.apply(v, parts);
+
+  drawRaw();
+}
+
+function refresh() {
+  var dot = document.getElementById("dot");
+  var status = document.getElementById("status");
+  status.textContent = "Обновляю…";
+  Promise.all(["students","teachers","jury"].map(loadSheet)).then(function (res) {
+    var failed = 0;
+    ["students","teachers","jury"].forEach(function (n, i) { if (res[i]) DATA[n] = res[i]; else failed++; });
+    var now = new Date();
+    var hh = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0") + ":" + String(now.getSeconds()).padStart(2, "0");
+    if (failed) { dot.className = "dot err"; status.textContent = "Не удалось загрузить часть ответов, попробую снова. Последняя попытка: " + hh; }
+    else { dot.className = "dot"; status.textContent = "Обновлено в " + hh; }
+    render();
+  });
+}
+
+var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+tabs.forEach(function (t) {
+  t.addEventListener("click", function () {
+    tabs.forEach(function (x) { x.setAttribute("aria-selected", String(x === t)); });
+    document.querySelectorAll(".page").forEach(function (p) { p.hidden = p.dataset.page !== t.dataset.tab; });
+    history.replaceState(null, "", "#" + t.dataset.tab);
+  });
+});
+var start = location.hash.slice(1);
+tabs.forEach(function (t) { if (t.dataset.tab === start) t.click(); });
+document.getElementById("refresh").addEventListener("click", refresh);
+document.getElementById("raw-group").addEventListener("change", drawRaw);
+document.getElementById("raw-search").addEventListener("input", drawRaw);
+refresh();
+setInterval(refresh, 30000);
+</script>
+</body>
+</html>
